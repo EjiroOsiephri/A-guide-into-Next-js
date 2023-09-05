@@ -2,14 +2,24 @@
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import axios from "axios";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const Signup = () => {
   const [user, setUser] = useState({
-    userName: "",
+    username: "",
     email: "",
     password: "",
   });
+
+  const [disabled, setDisabled] = useState(false);
+
+  useEffect(() => {
+    if (user.username.length > 0 && user.email.length && user.password.length) {
+      setDisabled(false);
+    } else {
+      setDisabled(true);
+    }
+  }, [user]);
 
   const onSignUp = async () => {};
   return (
@@ -21,9 +31,9 @@ const Signup = () => {
         <input
           className="p-2 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:border-gray-600 text-black"
           id="username"
-          value={user.userName}
+          value={user.username}
           type="text"
-          onChange={(e) => setUser({ ...user, userName: e.target.value })}
+          onChange={(e) => setUser({ ...user, username: e.target.value })}
           placeholder="username"
         />
         <label htmlFor="email">email</label>
@@ -52,7 +62,7 @@ const Signup = () => {
           onClick={onSignUp}
           className="p-2 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:border-gray-600"
         >
-          Signup
+          {disabled ? "No signup" : "signup"}
         </button>
         <Link href="/login">Visit login page</Link>
       </div>
